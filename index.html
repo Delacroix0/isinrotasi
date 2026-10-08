@@ -2,15 +2,249 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Çalışma Hayatı ve İş Hukuku Platformu</title>
+    <!-- Google Fontları -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background-color: #f4f4f9; color: #333; }
-        h1 { color: #003366; }
-        p { font-size: 18px; }
+        :root {
+            --primary-color: #0f172a; /* Derin Kurumsal Lacivert */
+            --secondary-color: #0284c7; /* Profesyonel Mavi */
+            --accent-color: #f8fafc; /* Hafif Kırık Beyaz / Gri */
+            --text-color: #334155;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Üst Menü (Header) */
+        header {
+            background-color: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 15px;
+            transition: color 0.2s;
+        }
+
+        nav ul li a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Karşılama Alanı (Hero Section) */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color), #1e293b);
+            color: #ffffff;
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .hero h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 30px auto;
+            color: #94a3b8;
+        }
+
+        /* Ana İçerik ve Kartlar Alanı */
+        .container {
+            max-width: 1100px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--primary-color);
+            font-size: 28px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .card p {
+            color: #64748b;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #0369a1;
+        }
+
+        /* Alt Bilgi (Footer) */
+        footer {
+            background-color: var(--primary-color);
+            color: #94a3b8;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 80px;
+            font-size: 14px;
+        }
+
+        footer p {
+            max-width: 800px;
+            margin: 0 auto 10px auto;
+        }
+
+        /* Mobil Uyumluluk */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            .hero h1 {
+                font-size: 28px;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Çalışma Hayatı ve İş Hukuku Platformu</h1>
-    <p>Sitemiz çok yakında yayında! Klasik bir blogun ötesinde, başvuru kaynağı ve interaktif araçlarla güncelleniyor.</p>
+
+    <!-- Üst Menü -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">İş & Hukuk Platformu</a>
+            <nav>
+                <ul>
+                    <li><a href="#">Ana Sayfa</a></li>
+                    <li><a href="#">Çalışan Hakları</a></li>
+                    <li><a href="#">İK & İşveren</a></li>
+                    <li><a href="#">Mevzuat</a></li>
+                    <li><a href="#">Pratik Araçlar</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Karşılama Alanı -->
+    <section class="hero">
+        <h1>Çalışma Hayatında Güvenilir Rehberiniz</h1>
+        <p>Mevzuat, güncel yargı kararları, çalışan hakları ve insan kaynakları pratikleri için kapsamlı başvuru merkezi.</p>
+    </section>
+
+    <!-- İçerik Alanı: İki Yönlü Giriş Kartları -->
+    <div class="container">
+        <h2 class="section-title">Kategoriler ve Rehberler</h2>
+        <div class="cards-grid">
+            
+            <!-- Kart 1: Çalışanlar İçin -->
+            <div class="card">
+                <h3>Çalışan & Sendika Köşesi</h3>
+                <p>Kıdem ve ihbar tazminatı hakları, fazla mesai hesaplama esasları, haklı fesih nedenleri ve işçi alacaklarına dair pratik rehberler.</p>
+                <a href="#" class="btn">Rehberleri İncele</a>
+            </div>
+
+            <!-- Kart 2: İK ve İşverenler İçin -->
+            <div class="card">
+                <h3>İK & İşveren Pratikleri</h3>
+                <p>Özlük dosyası hazırlama, disiplin soruşturması süreçleri, geçerli ve haklı fesih bildirimleri, ihtarname taslakları ve yasal uyum rehberleri.</p>
+                <a href="#" class="btn">Prosedürleri İncele</a>
+            </div>
+
+            <!-- Kart 3: Mevzuat ve Emsal Kararlar -->
+            <div class="card">
+                <h3>Mevzuat & İçtihat Arşivi</h3>
+                <p>4857 Sayılı İş Kanunu maddeleri, kritik Yargıtay kararı analizleri ve çalışma hayatını etkileyen güncel yasal düzenlemeler.</p>
+                <a href="#" class="btn">Kararları İncele</a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Alt Bilgi ve Sorumluluk Reddi -->
+    <footer>
+        <p><strong>Yasal Uyarı:</strong> Bu sitede yer alan makale, bilgi, hesaplama ve taslaklar yalnızca bilgilendirme amaçlıdır; hukuki tavsiye veya danışmanlık niteliği taşımaz.</p>
+        <p>&copy; 2026 Çalışma Hayatı ve İş Hukuku Platformu. Tüm hakları saklıdır.</p>
+    </footer>
+
 </body>
 </html>
