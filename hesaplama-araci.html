@@ -86,7 +86,7 @@
             font-size: 14px;
         }
 
-        input, select {
+        input {
             width: 100%;
             padding: 12px;
             border: 1px solid var(--border-color);
@@ -96,7 +96,7 @@
             background-color: #fff;
         }
 
-        input:focus, select:focus {
+        input:focus {
             outline: none;
             border-color: var(--secondary-color);
         }
@@ -187,6 +187,13 @@
             margin-top: 60px;
             font-size: 14px;
         }
+
+        @media (max-width: 600px) {
+            .row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -201,11 +208,11 @@
         <a href="index.html" class="back-btn">&larr; Ana Sayfaya Dön</a>
         
         <h1>Kıdem ve İhbar Tazminatı Hesaplama</h1>
-        <p class="subtitle">Vergi usulüne ve güncel kıdem tazminatı tavanlarına uygun profesyonel hesaplama motoru.</p>
+        <p class="subtitle">Güncel yasal tavanlara ve vergi kesintilerine uygun profesyonel hesaplama motoru.</p>
 
         <div class="row">
             <div class="form-group">
-                <label for=" iseGiris">İşe Giriş Tarihi</label>
+                <label for="isGiris">İşe Giriş Tarihi</label>
                 <input type="date" id="isGiris">
             </div>
             <div class="form-group">
@@ -225,7 +232,7 @@
             <h3>Hesaplama Sonucu ve Dökümü</h3>
             <div class="result-item">
                 <span>Toplam Çalışma Süresi:</span>
-                <span class="result-value" id="toplam Sure">-</span>
+                <span class="result-value" id="toplamSure">-</span>
             </div>
             <div class="result-item">
                 <span>Esas Alınan Aylık Brüt Ücret:</span>
@@ -248,9 +255,7 @@
                 <span class="result-value" id="ihbarBrut">0 TL</span>
             </div>
             
-            <div class="info-note" id="tavanBilgi">
-                <!-- Tavan aşım durumları burada dinamik gösterilecek -->
-            </div>
+            <div class="info-note" id="tavanBilgi"></div>
         </div>
     </div>
 
@@ -260,21 +265,17 @@
     </footer>
 
     <script>
-        // 2026 yılı güncel kıdem tazminatı tavanları (Dönemsel)
         function getKidemTavari(cikisTarihi) {
             let yil = cikisTarihi.getFullYear();
             let ay = cikisTarihi.getMonth() + 1;
-
-            // 2026 yılı tavanları (İkinci yarı 73.729,87 TL, ilk yarı 64.948,77 TL)
             if (yil === 2026) {
-                if (ay > 6) return 73729.87;
-                return 64948.77;
+                return ay > 6 ? 73729.87 : 64948.77;
             } else if (yil > 2026) {
-                return 73729.87; // Güncel üst sınır varsayımı
+                return 73729.87;
             } else if (yil === 2025) {
                 return ay > 6 ? 53919.68 : 46655.43;
             }
-            return 46655.43; // Geçmiş yıllar için genel taban tavan
+            return 46655.43;
         }
 
         function hesaplaTazminat() {
@@ -283,7 +284,7 @@
             let brutMusteri = parseFloat(document.getElementById('brutMaas').value);
 
             if (!girisStr || !cikisStr) {
-                alert("Lütfen işe giriş ve çıkış tarihlerini eksiksiz giriniz.");
+                alert("Lütfen işe giriş ve çıkış tarihlerini eksiksiz seçiniz.");
                 return;
             }
 
@@ -300,7 +301,6 @@
                 return;
             }
 
-            // Gün farkı hesaplama
             let diffTime = Math.abs(d2 - d1);
             let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
@@ -310,11 +310,10 @@
             }
 
             let yil = Math.floor(diffDays / 365);
-            let kalan GunYil = diffDays % 365;
+            let kalanGunYil = diffDays % 365;
             let ay = Math.floor(kalanGunYil / 30);
             let gun = kalanGunYil % 30;
 
-            // Tavan Kontrolü
             let tavanTutar = getKidemTavari(d2);
             let esasUcret = brutMusteri;
             let tavanAsildiMı = false;
@@ -324,15 +323,12 @@
                 tavanAsildiMı = true;
             }
 
-            // Kıdem Tazminatı Brüt Hesap (Gün esasına göre: (Ücret / 365) * Toplam Gün)
             let gunlukBrut = esasUcret / 365;
             let kidemBrut = gunlukBrut * diffDays;
 
-            // Damga Vergisi (Binde 7.59 -> 0.00759)
             let damgaVergisi = kidemBrut * 0.00759;
             let kidemNet = kidemBrut - damgaVergisi;
 
-            // İhbar Süresi ve Tazminatı Hesaplama (İş Kanunu md. 17)
             let ihbarHafta = 0;
             if (diffDays < 180) ihbarHafta = 2;
             else if (diffDays < 540) ihbarHafta = 4;
@@ -341,7 +337,6 @@
 
             let ihbarBrut = (brutMusteri / 30) * (ihbarHafta * 7);
 
-            // Sonuçları HTML'e yansıtma
             document.getElementById('toplamSure').innerText = `${yil} Yıl, ${ay} Ay, ${gun} Gün (${diffDays} Gün)`;
             document.getElementById('esasUcret').innerText = esasUcret.toLocaleString('tr-TR', {maximumFractionDigits: 2}) + " TL";
             document.getElementById('kidemBrut').innerText = kidemBrut.toLocaleString('tr-TR', {maximumFractionDigits: 2}) + " TL";
