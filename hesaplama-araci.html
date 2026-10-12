@@ -53,7 +53,7 @@
         }
 
         .content-container {
-            max-width: 700px;
+            max-width: 750px;
             margin: 40px auto;
             padding: 40px;
             background: var(--card-bg);
@@ -86,16 +86,17 @@
             font-size: 14px;
         }
 
-        input {
+        input, select {
             width: 100%;
             padding: 12px;
             border: 1px solid var(--border-color);
             border-radius: 6px;
             font-size: 16px;
             color: var(--text-color);
+            background-color: #fff;
         }
 
-        input:focus {
+        input:focus, select:focus {
             outline: none;
             border-color: var(--secondary-color);
         }
@@ -131,27 +132,38 @@
             margin-top: 30px;
             background-color: #f1f5f9;
             border: 1px solid #cbd5e1;
-            padding: 20px;
+            padding: 25px;
             border-radius: 6px;
             display: none;
         }
 
         .result-box h3 {
             color: var(--primary-color);
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             font-size: 18px;
+            border-bottom: 1px solid #cbd5e1;
+            padding-bottom: 8px;
         }
 
         .result-item {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             font-size: 15px;
         }
 
         .result-value {
             font-weight: 700;
             color: var(--primary-color);
+        }
+
+        .info-note {
+            font-size: 13px;
+            color: #475569;
+            margin-top: 15px;
+            background: #e2e8f0;
+            padding: 10px;
+            border-radius: 4px;
         }
 
         .back-btn {
@@ -189,41 +201,56 @@
         <a href="index.html" class="back-btn">&larr; Ana Sayfaya Dön</a>
         
         <h1>Kıdem ve İhbar Tazminatı Hesaplama</h1>
-        <p class="subtitle">Brüt maaşınız ve çalışma sürenize göre tahmini tazminat tutarlarını hızlıca hesaplayın.</p>
-
-        <div class="form-group">
-            <label for="brutMaas">Aylık Giydirilmiş Brüt Ücret (TL)</label>
-            <input type="number" id="brutMaas" placeholder="Örn: 35000">
-        </div>
+        <p class="subtitle">Vergi usulüne ve güncel kıdem tazminatı tavanlarına uygun profesyonel hesaplama motoru.</p>
 
         <div class="row">
             <div class="form-group">
-                <label for="yil">Çalışma Süresi (Yıl)</label>
-                <input type="number" id="yil" placeholder="Örn: 3" value="0">
+                <label for=" iseGiris">İşe Giriş Tarihi</label>
+                <input type="date" id="isGiris">
             </div>
             <div class="form-group">
-                <label for="ay">Ay</label>
-                <input type="number" id="ay" placeholder="Örn: 6" value="0">
-            </div>
-            <div class="form-group">
-                <label for="gun">Gün</label>
-                <input type="number" id="gun" placeholder="Örn: 15" value="0">
+                <label for="cikisTarihi">İşten Çıkış Tarihi</label>
+                <input type="date" id="cikisTarihi">
             </div>
         </div>
 
-        <button class="btn-calc" onclick="hesapla()">Tazminatı Hesapla</button>
+        <div class="form-group">
+            <label for="brutMaas">Aylık Giydirilmiş Brüt Ücret (TL)</label>
+            <input type="number" id="brutMaas" placeholder="Örn: 45000">
+        </div>
+
+        <button class="btn-calc" onclick="hesaplaTazminat()">Hesapla</button>
 
         <div class="result-box" id="sonucAlani">
-            <h3>Hesaplama Sonucu (Tahmini)</h3>
+            <h3>Hesaplama Sonucu ve Dökümü</h3>
             <div class="result-item">
-                <span>Kıdem Tazminatı (Brüt):</span>
-                <span class="result-value" id="kidemSonuc">0 TL</span>
+                <span>Toplam Çalışma Süresi:</span>
+                <span class="result-value" id="toplam Sure">-</span>
             </div>
             <div class="result-item">
-                <span>İhbar Tazminatı (Brüt):</span>
-                <span class="result-value" id="ihbarSonuc">0 TL</span>
+                <span>Esas Alınan Aylık Brüt Ücret:</span>
+                <span class="result-value" id="esasUcret">-</span>
             </div>
-            <p style="font-size: 12px; color: #64748b; margin-top: 15px;">* Hesaplama genel kurallara göre yapılmış olup, dönemsel tavan sınırlamaları ve yasal kesintiler (damga vergisi vb.) değişiklik gösterebilir.</p>
+            <div class="result-item">
+                <span>Brüt Kıdem Tazminatı:</span>
+                <span class="result-value" id="kidemBrut">0 TL</span>
+            </div>
+            <div class="result-item">
+                <span>Damga Vergisi Kesintisi (Binde 7.59):</span>
+                <span class="result-value" id="damgaVergisi">0 TL</span>
+            </div>
+            <div class="result-item" style="border-top: 1px dashed #cbd5e1; padding-top: 10px; margin-top: 5px;">
+                <span style="font-weight: 700;">Net Ödenecek Kıdem Tazminatı:</span>
+                <span class="result-value" id="kidemNet" style="color: #0284c7; font-size: 18px;">0 TL</span>
+            </div>
+            <div class="result-item" style="margin-top: 15px;">
+                <span>Tahmini Brüt İhbar Tazminatı:</span>
+                <span class="result-value" id="ihbarBrut">0 TL</span>
+            </div>
+            
+            <div class="info-note" id="tavanBilgi">
+                <!-- Tavan aşım durumları burada dinamik gösterilecek -->
+            </div>
         </div>
     </div>
 
@@ -233,45 +260,102 @@
     </footer>
 
     <script>
-        function hesapla() {
-            let brut = parseFloat(document.getElementById('brutMaas').value);
-            let yil = parseFloat(document.getElementById('yil').value) || 0;
-            let ay = parseFloat(document.getElementById('ay').value) || 0;
-            let gun = parseFloat(document.getElementById('gun').value) || 0;
+        // 2026 yılı güncel kıdem tazminatı tavanları (Dönemsel)
+        function getKidemTavari(cikisTarihi) {
+            let yil = cikisTarihi.getFullYear();
+            let ay = cikisTarihi.getMonth() + 1;
 
-            if (isNaN(brut) || brut <= 0) {
+            // 2026 yılı tavanları (İkinci yarı 73.729,87 TL, ilk yarı 64.948,77 TL)
+            if (yil === 2026) {
+                if (ay > 6) return 73729.87;
+                return 64948.77;
+            } else if (yil > 2026) {
+                return 73729.87; // Güncel üst sınır varsayımı
+            } else if (yil === 2025) {
+                return ay > 6 ? 53919.68 : 46655.43;
+            }
+            return 46655.43; // Geçmiş yıllar için genel taban tavan
+        }
+
+        function hesaplaTazminat() {
+            let girisStr = document.getElementById('isGiris').value;
+            let cikisStr = document.getElementById('cikisTarihi').value;
+            let brutMusteri = parseFloat(document.getElementById('brutMaas').value);
+
+            if (!girisStr || !cikisStr) {
+                alert("Lütfen işe giriş ve çıkış tarihlerini eksiksiz giriniz.");
+                return;
+            }
+
+            let d1 = new Date(girisStr);
+            let d2 = new Date(cikisStr);
+
+            if (d2 <= d1) {
+                alert("İşten çıkış tarihi işe giriş tarihinden sonra olmalıdır.");
+                return;
+            }
+
+            if (isNaN(brutMusteri) || brutMusteri <= 0) {
                 alert("Lütfen geçerli bir brüt maaş giriniz.");
                 return;
             }
 
-            // Toplam gün hesaplama
-            let toplamGun = (yil * 365) + (ay * 30) + gun;
-            
-            // Kıdem Tazminatı: Her tam yıl için 30 günlük brüt, artan günler oranlanır
-            let gunlukBrut = brut / 365;
-            let kidemTazminati = gunlukBrut * toplamGun;
+            // Gün farkı hesaplama
+            let diffTime = Math.abs(d2 - d1);
+            let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-            // İhbar Süresi ve Tazminatı Hesaplama (İş Kanunu md. 17)
-            // 6 aydan az: 2 hafta (14 gün)
-            // 6 ay - 1.5 yıl: 4 hafta (28 gün)
-            // 1.5 yıl - 3 yıl: 6 hafta (42 gün)
-            // 3 yıldan fazla: 8 hafta (56 gün)
-            let ihbarGun = 0;
-            if (toplamGun < 180) {
-                ihbarGun = 14;
-            } else if (toplamGun >= 180 && toplamGun < 540) {
-                ihbarGun = 28;
-            } else if (toplamGun >= 540 && toplamGun < 1095) {
-                ihbarGun = 42;
-            } else {
-                ihbarGun = 56;
+            if (diffDays < 365) {
+                alert("Kıdem tazminatına hak kazanabilmek için en az 1 yıllık (365 gün) çalışma süresi gereklidir.");
+                return;
             }
 
-            let ihbarTazminati = (brut / 30) * ihbarGun;
+            let yil = Math.floor(diffDays / 365);
+            let kalan GunYil = diffDays % 365;
+            let ay = Math.floor(kalanGunYil / 30);
+            let gun = kalanGunYil % 30;
 
-            // Sonuçları ekrana yazdır
-            document.getElementById('kidemSonuc').innerText = kidemTazminati.toLocaleString('tr-TR', {maximumFractionDigits: 2}) + " TL";
-            document.getElementById('ihbarSonuc').innerText = ihbarTazminati.toLocaleString('tr-TR', {maximumFractionDigits: 2}) + " TL";
+            // Tavan Kontrolü
+            let tavanTutar = getKidemTavari(d2);
+            let esasUcret = brutMusteri;
+            let tavanAsildiMı = false;
+
+            if (brutMusteri > tavanTutar) {
+                esasUcret = tavanTutar;
+                tavanAsildiMı = true;
+            }
+
+            // Kıdem Tazminatı Brüt Hesap (Gün esasına göre: (Ücret / 365) * Toplam Gün)
+            let gunlukBrut = esasUcret / 365;
+            let kidemBrut = gunlukBrut * diffDays;
+
+            // Damga Vergisi (Binde 7.59 -> 0.00759)
+            let damgaVergisi = kidemBrut * 0.00759;
+            let kidemNet = kidemBrut - damgaVergisi;
+
+            // İhbar Süresi ve Tazminatı Hesaplama (İş Kanunu md. 17)
+            let ihbarHafta = 0;
+            if (diffDays < 180) ihbarHafta = 2;
+            else if (diffDays < 540) ihbarHafta = 4;
+            else if (diffDays < 1095) ihbarHafta = 6;
+            else ihbarHafta = 8;
+
+            let ihbarBrut = (brutMusteri / 30) * (ihbarHafta * 7);
+
+            // Sonuçları HTML'e yansıtma
+            document.getElementById('toplamSure').innerText = `${yil} Yıl, ${ay} Ay, ${gun} Gün (${diffDays} Gün)`;
+            document.getElementById('esasUcret').innerText = esasUcret.toLocaleString('tr-TR', {maximumFractionDigits: 2}) + " TL";
+            document.getElementById('kidemBrut').innerText = kidemBrut.toLocaleString('tr-TR', {maximumFractionDigits: 2}) + " TL";
+            document.getElementById('damgaVergisi').innerText = damgaVergisi.toLocaleString('tr-TR', {maximumFractionDigits: 2}) + " TL";
+            document.getElementById('kidemNet').innerText = kidemNet.toLocaleString('tr-TR', {maximumFractionDigits: 2}) + " TL";
+            document.getElementById('ihbarBrut').innerText = ihbarBrut.toLocaleString('tr-TR', {maximumFractionDigits: 2}) + " TL";
+
+            let bilgiDiv = document.getElementById('tavanBilgi');
+            if (tavanAsildiMı) {
+                bilgiDiv.innerHTML = `⚠️ <strong>Tavan Uygulaması:</strong> Girdiğiniz brüt ücret çıkış tarihindeki yasal kıdem tazminatı tavanını (${tavanTutar.toLocaleString('tr-TR')} TL) aştığı için hesaplama tavan tutarı üzerinden yapılmıştır.`;
+            } else {
+                bilgiDiv.innerHTML = `ℹ️ Girdiğiniz ücret yasal tavan sınırının altında olduğu için kendi brüt ücretiniz üzerinden hesaplanmıştır.`;
+            }
+
             document.getElementById('sonucAlani').style.display = 'block';
         }
     </script>
